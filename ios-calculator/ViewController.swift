@@ -39,6 +39,7 @@ class ViewController: UIViewController {
         } else {
             resultLabel.text = resultLabel.text! + sender.currentTitle!
         }
+        calculatorModel.setOperand(Double(displayValue))
     }
 }
 
