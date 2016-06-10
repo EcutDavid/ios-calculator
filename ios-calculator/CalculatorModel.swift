@@ -8,30 +8,15 @@
 
 import Foundation
 
-func plus(arg1: Double , arg2: Double) -> Double {
-    return arg1 + arg2
-}
-
-func minus(arg1: Double , arg2: Double) -> Double {
-    return arg1 - arg2
-}
-
-func multiply(arg1: Double , arg2: Double) -> Double {
-    return arg1 * arg2
-}
-
-func divide(arg1: Double , arg2: Double) -> Double {
-    return arg1 / arg2
-}
-
 class CalculatorModel {
     var oprations: Dictionary<String, Operation> = [
         "π": Operation.Constant(M_PI),
         "e": Operation.Constant(M_E),
-        "+": Operation.binaryOperation(plus),
-        "-": Operation.binaryOperation(minus),
-        "*": Operation.binaryOperation(multiply),
-        "/": Operation.binaryOperation(divide),
+        "±": Operation.unaryOperation({ -$0 }),
+        "+": Operation.binaryOperation({ $0 + $1 }),
+        "-": Operation.binaryOperation({ $0 - $1 }),
+        "*": Operation.binaryOperation({ $0 * $1 }),
+        "/": Operation.binaryOperation({ $0 / $1 }),
         "=": Operation.Equals
     ]
     enum Operation {
@@ -61,7 +46,8 @@ class CalculatorModel {
             switch constant {
             case .Constant(let value):
                 accumulator = value
-            case .unaryOperation: break
+            case .unaryOperation(let function):
+                accumulator = function(accumulator)
             case .binaryOperation(let function):
                 excutePendingOperation()
                 pendingValue = PendingOperationInfo(pendingValue: accumulator, pendingOperation: function)
