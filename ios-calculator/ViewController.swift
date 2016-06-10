@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var resultLabel: UILabel!
     private var labelNeedClear = true
+    private var calculatorModel = CalculatorModel()
     
     private var displayValue: Double {
         get {
@@ -26,10 +27,9 @@ class ViewController: UIViewController {
     @IBAction private func performOperaton(sender: UIButton) {
         labelNeedClear = true
         if let mathSymbol = sender.currentTitle {
-            if mathSymbol == "π" {
-                displayValue = M_PI
-            }
+            calculatorModel.performOperaton(mathSymbol)
         }
+        displayValue = calculatorModel.result
     }
     
     @IBAction private func onTouch(sender: UIButton) {
