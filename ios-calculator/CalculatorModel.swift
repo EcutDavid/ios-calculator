@@ -9,7 +9,7 @@
 import Foundation
 
 class CalculatorModel {
-    var oprations: Dictionary<String, Operation> = [
+    private var oprations: Dictionary<String, Operation> = [
         "π": Operation.Constant(M_PI),
         "e": Operation.Constant(M_E),
         "±": Operation.unaryOperation({ -$0 }),
@@ -19,13 +19,13 @@ class CalculatorModel {
         "/": Operation.binaryOperation({ $0 / $1 }),
         "=": Operation.Equals
     ]
-    enum Operation {
+    private enum Operation {
         case Constant(Double)
         case unaryOperation((Double) -> Double)
         case binaryOperation((Double, Double) -> Double)
         case Equals
     }
-    struct PendingOperationInfo {
+    private struct PendingOperationInfo {
         var pendingValue: Double
         var pendingOperation: (Double, Double) -> Double
     }
@@ -56,7 +56,7 @@ class CalculatorModel {
             }
         }
     }
-    func excutePendingOperation() {
+    private func excutePendingOperation() {
         if let operation = pendingValue {
             accumulator = operation.pendingOperation(operation.pendingValue, accumulator)
             pendingValue = nil
